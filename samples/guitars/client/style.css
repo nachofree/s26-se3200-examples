@@ -1,0 +1,53 @@
+body {
+  background: #f4f6f8;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Grid layout */
+.guitar_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 40px auto;
+}
+
+/* Card */
+.guitar_div {
+  padding: 20px;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.guitar_div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+}
+
+.guitar_div h2 {
+  margin: 0 0 8px;
+  color: #222;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #1a7f37;
+  margin-bottom: 10px;
+}
+
+/* Stars */
+.rating::before {
+  content: "★★★★★";
+  letter-spacing: 3px;
+  font-size: 1.1rem;
+  background: linear-gradient(
+    90deg,
+    #f5b301 calc(var(--rating) * 20%),
+    #ddd calc(var(--rating) * 20%)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
