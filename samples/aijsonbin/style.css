@@ -1,0 +1,120 @@
+body {
+    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 60px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    padding: 32px 24px;
+    text-align: center;
+}
+
+h1 {
+    color: #f76b1c;
+    margin-bottom: 24px;
+}
+
+.data-container {
+    margin-top: 24px;
+    text-align: left;
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    min-height: 80px;
+    font-size: 1.1em;
+    color: #333;
+    word-break: break-word;
+}
+
+.guitar-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    margin-bottom: 20px;
+    padding: 20px 18px 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+    gap: 22px;
+}
+.guitar-card:hover {
+    box-shadow: 0 8px 24px rgba(247, 107, 28, 0.18), 0 2px 8px rgba(0,0,0,0.13);
+    background: #fff7f0;
+    transform: translateY(-4px) scale(1.03);
+    border: 1.5px solid #f76b1c;
+}
+.guitar-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    background: #f3f3f3;
+}
+.guitar-info {
+    font-size: 1.08em;
+    color: #222;
+    flex: 1;
+}
+.guitar-actions {
+    display: flex;
+    gap: 10px;
+}
+.edit-btn, .delete-btn {
+    padding: 7px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: not-allowed;
+    background: #e0e0e0;
+    color: #888;
+    transition: background 0.2s;
+}
+.edit-btn:active, .delete-btn:active {
+    background: #d1d1d1;
+}
+.add-guitar-form-wrapper {
+    margin-bottom: 32px;
+    background: #f7f7fa;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    padding: 24px 18px 10px 18px;
+}
+.add-guitar-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+}
+.add-guitar-form h2 {
+    flex-basis: 100%;
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    color: #f76b1c;
+}
+.add-guitar-form input {
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    min-width: 120px;
+}
+.add-guitar-form button {
+    padding: 7px 18px;
+    border: none;
+    border-radius: 5px;
+    background: #f76b1c;
+    color: #fff;
+    font-size: 1em;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

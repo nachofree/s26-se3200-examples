@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 2em;
+}
+
+h1 {
+    color: #333;
+}
+
+.controls {
+    margin-bottom: 1em;
+}
+
+button {
+    margin-right: 0.5em;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+.list-item {
+    margin-bottom: 1em;
+    padding: 1em;
+    border: 1px solid #ccc;
+}
+
+.list-item p {
+    margin: 0.5em 0;
+    padding: 0.5em;
+    transition: background 0.3s;
+}
+
+.list-item:first-child p {
+    font-weight: bold;
+}
+
+.list-item:nth-child(2) p {
+    color: blue;
+}
+
+.list-item:hover {
+    background-color: #f0f0f0;
+}
+
+.highlight {
+    background: #ffe066;
+    border-radius: 4px;
+}
+
+.list-item p:hover {
+    background: #b3e5fc;
+}
+
+#result {
+    margin-top: 1em;
+    font-size: 1.1em;
+    color: #333;
+}
