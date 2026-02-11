@@ -39,10 +39,12 @@ def create_a_new_guitar():
         return "Error: 'name' field is required", 400, {"Access-Control-Allow-Origin": "*"}
     if 'rating' not in request.form:
         return "Error: 'rating' field is required", 400, {"Access-Control-Allow-Origin": "*"}
+    if 'price' not in request.form:
+        return "Error: 'price' field is required", 400, {"Access-Control-Allow-Origin": "*"}
     
     name = request.form['name'].strip()
     rating = request.form['rating'].strip()
-    
+    price = request.form['price'].strip()
     
     # Validate rating is a valid number
     try:
@@ -54,7 +56,17 @@ def create_a_new_guitar():
     if rating_num < 0 or rating_num > 10:
         return "Error: 'rating' must be between 0 and 10", 400, {"Access-Control-Allow-Origin": "*"}
     
-    guitars.append({"name": name, "rating": int(rating_num)})
+    # Validate price is a valid number
+    try:
+        price_num = float(price)
+    except (ValueError, TypeError):
+        return "Error: 'price' must be a valid number", 400, {"Access-Control-Allow-Origin": "*"}
+    
+    # Validate price is positive
+    if price_num < 0:
+        return "Error: 'price' must be positive", 400, {"Access-Control-Allow-Origin": "*"}
+    
+    guitars.append({"name": name, "rating": int(rating_num), "price": price_num})
 
     return "created", 201, {"Access-Control-Allow-Origin": "*"}
 

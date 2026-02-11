@@ -17,6 +17,34 @@ function build_guitar_div(guitar)
 }
 
 
+const modalAddBtn = document.querySelector("#add_btn")
+modalAddBtn.onclick = function (){
+    console.log("Clciked the button")
+    let name = document.querySelector("#guitar_name").value
+    let rating = document.querySelector("#guitar_rating").value
+    let price = document.querySelector("#guitar_price").value
+
+    console.log(name,rating,price)
+    let data = "name="+encodeURIComponent(name)
+    data += "&rating="+encodeURIComponent(rating)
+    data += "&price="+encodeURIComponent(price)
+
+    console.log("The query string is ", data)
+    fetch("http://localhost:5000/guitars", {
+        method: "POST",
+        body: data,
+        headers: {
+            "Content-Type":"application/x-www-form-urlencoded"
+        }
+    }).then(function(){
+        console.log("New guitar created")
+        load_page()
+         modal.classList.remove('show');
+    document.getElementById('guitar_form').reset();
+    })
+}
+
+
 
 
 // Modal functionality
@@ -41,6 +69,10 @@ window.addEventListener('click', function(event) {
     }
 });
 
+function load_page()
+{
+    let grid_div = document.querySelector("#guitar_grid")
+    grid_div.innerHTML = ""
 console.log("connected")
 fetch("http://localhost:5000/guitars")
 .then(function(response){
@@ -55,3 +87,5 @@ fetch("http://localhost:5000/guitars")
             build_guitar_div(guitar)
         })
     })
+}
+load_page()
