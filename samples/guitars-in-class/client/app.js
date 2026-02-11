@@ -19,6 +19,28 @@ function build_guitar_div(guitar)
 
 
 
+// Modal functionality
+const modal = document.getElementById('guitar_modal');
+const addBtn = document.getElementById('add_guitar_btn');
+const cancelBtn = document.getElementById('cancel_btn');
+
+addBtn.addEventListener('click', function() {
+    modal.classList.add('show');
+});
+
+cancelBtn.addEventListener('click', function() {
+    modal.classList.remove('show');
+    document.getElementById('guitar_form').reset();
+});
+
+// Close modal when clicking outside of it
+window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+        modal.classList.remove('show');
+        document.getElementById('guitar_form').reset();
+    }
+});
+
 console.log("connected")
 fetch("http://localhost:5000/guitars")
 .then(function(response){

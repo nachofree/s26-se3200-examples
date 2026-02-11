@@ -4,13 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="guitar_grid">
-        
+    <button id="add_guitar_btn" class="add-guitar-btn">+ Add Guitar</button>
+    
+    <div id="guitar_grid">
+
     </div>
     
+    <!-- Modal for adding new guitar -->
+    <div id="guitar_modal" class="modal">
+        <div class="modal-content">
+            <h2>Add New Guitar</h2>
+            <form id="guitar_form">
+                <div class="form-group">
+                    <label for="guitar_name">Name:</label>
+                    <input type="text" id="guitar_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="guitar_price">Price:</label>
+                    <input type="number" id="guitar_price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="guitar_rating">Rating:</label>
+                    <input type="number" id="guitar_rating" min="0" max="10" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancel_btn" class="btn-cancel">Cancel</button>
+                    <button type="button" id="add_btn" class="btn-add">Add</button>
+                </div>
+            </form>
+        </div>
+    </div> 
 </body>
 <script src="app.js"></script>
 </html>
