@@ -1,8 +1,11 @@
 from flask import Flask
 from flask import json
 from flask import request
+from dummydb import *
 
 app = Flask(__name__)
+
+db = DummyDB('database.json')
 
 @app.route("/", methods=["GET"])
 def hello_world():
@@ -27,7 +30,8 @@ guitars = [
 
 @app.route("/guitars")
 def get_guitars():
-    json_data = json.dumps(guitars, indent=2)
+    # json_data = json.dumps(guitars, indent=2)
+    json_data = db.readAllRecords()
     return json_data, {"Access-Control-Allow-Origin": "*"}
 
 @app.route("/guitars", methods=["POST"])
@@ -66,7 +70,9 @@ def create_a_new_guitar():
     if price_num < 0:
         return "Error: 'price' must be positive", 400, {"Access-Control-Allow-Origin": "*"}
     
-    guitars.append({"name": name, "rating": int(rating_num), "price": price_num})
+    # guitars.append({"name": name, "rating": int(rating_num), "price": price_num})
+    guitar = {"name": name, "rating": int(rating_num), "price": price_num}
+    db.saveRecord(guitar)
 
     return "created", 201, {"Access-Control-Allow-Origin": "*"}
 
