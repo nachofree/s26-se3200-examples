@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import json
 from flask import request
+from dummydb import *
 
 app = Flask(__name__)
+db = DummyDB('sampledb.json')
 
 @app.route("/", methods=["GET"])
 def hello_world():
@@ -27,8 +29,10 @@ guitars = [
 
 @app.route("/guitars")
 def get_guitars():
-    json_data = json.dumps(guitars, indent=2)
-    return json_data, {"Access-Control-Allow-Origin": "*"}
+    return db.readAllRecords(), {"Access-Control-Allow-Origin": "*"}
+    # json_data = json.dumps(guitars, indent=2)
+    
+    # return json_data, {"Access-Control-Allow-Origin": "*"}
 
 @app.route("/guitars", methods=["POST"])
 def create_a_new_guitar():
@@ -55,8 +59,8 @@ def create_a_new_guitar():
     if rating_num < 0 or rating_num > 10:
         return "Error: 'rating' must be between 0 and 10", 400, {"Access-Control-Allow-Origin": "*"}
     
-    guitars.append({"name": name, "rating": int(rating_num), "price": float(price)})
-
+    guitar = {"name": name, "rating": int(rating_num), "price": float(price)}
+    db.saveRecord(guitar)
     return "created", 201, {"Access-Control-Allow-Origin": "*"}
 
 
