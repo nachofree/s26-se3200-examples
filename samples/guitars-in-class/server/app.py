@@ -1,11 +1,11 @@
 from flask import Flask
 from flask import json
 from flask import request
-from dummydb import *
+from realdb import *
 
 app = Flask(__name__)
 
-db = DummyDB('database.json')
+# db = DummyDB('database.json')
 
 @app.route("/", methods=["GET"])
 def hello_world():
@@ -15,21 +15,12 @@ def hello_world():
 def myindex():
     return "<p>index</p>"
 
-guitars = [
-    {"name": "Fender Stratocaster", "price": 107.39, "rating": 7},
-    {"name": "Gibson Les Paul", "price": 2499.99, "rating": 9},
-    {"name": "Ibanez RG550", "price": 999.99, "rating": 8},
-    {"name": "PRS Custom 24", "price": 3499.00, "rating": 9},
-    {"name": "Yamaha Pacifica 112V", "price": 329.99, "rating": 8},
-    {"name": "Epiphone SG Standard", "price": 499.99, "rating": 7},
-    {"name": "Gretsch G2622 Streamliner", "price": 649.99, "rating": 8},
-    {"name": "Jackson JS32 Dinky", "price": 379.99, "rating": 7},
-    {"name": "Taylor 214ce", "price": 1199.00, "rating": 9},
-    {"name": "Martin D-28", "price": 3199.00, "rating": 10}
-]
+
 
 @app.route("/guitars")
 def get_guitars():
+    db = RealDB('database.db')
+
     # json_data = json.dumps(guitars, indent=2)
     json_data = db.readAllRecords()
     return json_data, {"Access-Control-Allow-Origin": "*"}
@@ -37,6 +28,8 @@ def get_guitars():
 @app.route("/guitars", methods=["POST"])
 def create_a_new_guitar():
     print("The request data is ", request)
+    db = RealDB('database.db')
+
     
     # Validate that required fields are present
     if 'name' not in request.form:

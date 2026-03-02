@@ -4,7 +4,6 @@ function build_guitar_div(guitar) {
     let div_header = document.createElement("h1")
     let p_price = document.createElement("p")
     let p_rating = document.createElement("p")
-
     div_header.innerHTML = guitar.name
     p_price.innerHTML = guitar.price
     p_rating.innerHTML = guitar.rating
