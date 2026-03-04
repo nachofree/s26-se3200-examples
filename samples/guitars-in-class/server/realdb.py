@@ -7,6 +7,16 @@ class RealDB:
         self.filename = filename
         self.conn = sqlite3.connect("database.db")
         self.cursor = self.conn.cursor()
+
+    def deleteGuitar(self, id):
+        self.cursor.execute("DELETE FROM guitars WHERE id = ?", [id])
+        self.conn.commit()
+    
+    def updateGuitar(self, id, record):
+        data = [record["name"], record['rating'], record['price'], id]
+        self.cursor.execute("UPDATE guitars SET name = ?, rating = ?, price = ? WHERE id = ?", data)
+        self.conn.commit()
+        
     
 
     def saveRecord(self, record):
@@ -35,7 +45,7 @@ class RealDB:
         for row in guitars:
            d = self.dict_factory(self.cursor, row)
            all.append(d)
-        print("Alld the rows are", all)
+        #print("Alld the rows are", all)
         return all
 
 

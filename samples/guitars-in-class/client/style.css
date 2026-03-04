@@ -80,6 +80,26 @@ body{
   line-height: 1.35;
 }
 
+/* Guitar actions */
+.guitar-actions {
+  position: relative;
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.material-icons {
+  font-size: 24px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .18s ease;
+}
+
+.material-icons:hover {
+  color: var(--accent);
+}
+
 /* Format the 1st <p> as price, 2nd as rating badge */
 #guitar_grid p:nth-of-type(1){
   margin-top: 2px;
