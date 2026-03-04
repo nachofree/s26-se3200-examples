@@ -5,6 +5,19 @@ from db import *
 
 app = Flask(__name__)
 
+
+@app.route("/guitars/<int:id>", methods = ["OPTIONS"])
+def do_preflight(id):
+    print ("This is the preflight")
+    #need to respond with correct headers
+    #Access-Control-Allow-Origin: https://foo.bar.org
+    #Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE
+    #Access-Control-Allow-Headers: X-Requested-With
+
+    return '', 204, {"Access-Control-Allow-Origin": "*",
+                     "Access-Control-Allow-Methods": "PUT, DELETE",
+                     "Access-Control-Allow-Headers": "Content-Type"}
+
 @app.route("/", methods=["GET"])
 def hello_world():
     return "<p>Hello world</p>", {"Access-Control-Allow-Origin": "*"}
@@ -12,6 +25,13 @@ def hello_world():
 @app.route("/index")
 def myindex():
     return "<p>index</p>"
+
+
+@app.route("/guitars/<int:id>", methods=["DELETE"])
+def delete_guitar(id):
+    db = DB('guitars.db')
+    db.deleteRecord(id)
+    return "Deleted", 200, {"Access-Control-Allow-Origin": "*"}
 
 
 @app.route("/guitars")
