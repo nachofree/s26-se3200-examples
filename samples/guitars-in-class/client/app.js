@@ -19,23 +19,23 @@ function build_guitar_div(guitar) {
     actions_div.className = "guitar-actions"
     edit_icon.className = "material-icons"
     edit_icon.innerHTML = "edit"
-    edit_icon.onclick = function() {
+    edit_icon.onclick = function () {
         openEditModal(guitar);
     }
     delete_icon.className = "material-icons"
     delete_icon.innerHTML = "delete"
-    delete_icon.onclick = function() {
+    delete_icon.onclick = function () {
         // TODO: Implement delete functionality
         console.log("Delete guitar:", guitar.name);
-        fetch("http://localhost:5000/guitars/"+guitar.id, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    }).then(function () {
-        console.log("New guitar created")
-        load_page()
-    })
+        fetch("http://localhost:5000/guitars/" + guitar.id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }).then(function () {
+            console.log("New guitar created")
+            load_page()
+        })
 
     }
 
@@ -62,7 +62,7 @@ modalAddBtn.onclick = function () {
     data += "&price=" + encodeURIComponent(price)
 
     console.log("The query string is ", data)
-    
+
     if (modalMode === 'add') {
         fetch("http://localhost:5000/guitars", {
             method: "POST",
@@ -134,9 +134,27 @@ userRegisterBtn.addEventListener('click', function () {
     }
 
     // For now, just log the registration data
-    console.log('User registered:', { username, email, password });
-    alert('User registered successfully!');
-    closeUserModal();
+    console.log('User registered:', { email, password });
+
+    let data = "email=" + encodeURIComponent(email)
+    data += "&password=" + encodeURIComponent(password)
+
+    console.log("The query string is ", data)
+
+
+    fetch("http://localhost:5000/users", {
+        method: "POST",
+        body: data,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(function (response) {
+        console.log(response.text)
+        load_page()
+        closeUserModal();
+
+    })
+
 });
 
 // Close user modal when clicking outside of it
@@ -164,16 +182,16 @@ window.addEventListener('click', function (event) {
 function openEditModal(guitar) {
     modalMode = 'edit';
     editingGuitarId = guitar.id;
-    
+
     // Update modal title and button
     modalTitle.textContent = 'Edit Guitar';
     modalSubmitBtn.textContent = 'Save';
-    
+
     // Populate form with guitar data
     document.querySelector('#guitar_name').value = guitar.name;
     document.querySelector('#guitar_price').value = guitar.price;
     document.querySelector('#guitar_rating').value = guitar.rating;
-    
+
     // Open modal
     modal.classList.add('show');
 }
@@ -181,7 +199,7 @@ function openEditModal(guitar) {
 function closeModal() {
     modal.classList.remove('show');
     document.getElementById('guitar_form').reset();
-    
+
     // Reset modal state
     modalMode = 'add';
     editingGuitarId = null;

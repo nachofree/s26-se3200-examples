@@ -1,6 +1,7 @@
 
 import json
 import sqlite3
+from passlib.hash import bcrypt 
 
 class RealDB:
     def __init__(self, filename):
@@ -16,8 +17,19 @@ class RealDB:
         data = [record["name"], record['rating'], record['price'], id]
         self.cursor.execute("UPDATE guitars SET name = ?, rating = ?, price = ? WHERE id = ?", data)
         self.conn.commit()
-        
-    
+
+    def saveUser(self, email, password):
+        password = bcrypt.hash(password) 
+
+        data = [email, password]
+        self.cursor.execute("INSERT INTO users (email, password) VALUES (?, ?) ", data)
+        self.conn.commit()
+
+    def checkUserExists(self, email):
+        self.cursor.execute("SELECT * FROM users WHERE email = ?", [email])
+        users = self.cursor.fetchall()
+        return len(users)
+
 
     def saveRecord(self, record):
         print(record)

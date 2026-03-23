@@ -129,6 +129,26 @@ def create_a_new_guitar():
     return "created", 201, {"Access-Control-Allow-Origin": "*"}
 
 
+@app.route("/users", methods=["POST"])
+def create_a_new_user():
+    db = RealDB('database.db')
+
+    email = request.form['email']
+    password = request.form['password']
+
+    if 'email' not in request.form:
+        return "Error: 'email' field is required", 400, {"Access-Control-Allow-Origin": "*"}
+    
+    if len(password) < 5:
+        return "Error: 'password' must be more than 5 chars", 400, {"Access-Control-Allow-Origin": "*"}
+
+    if not db.checkUserExists(email):
+        db.saveUser(email, password)
+        return "created", 201, {"Access-Control-Allow-Origin": "*"}
+    else:
+        return "User already exists", 400, {"Access-Control-Allow-Origin": "*"}
+
+
 
 def run():
     app.run(port=5000, host='0.0.0.0')
