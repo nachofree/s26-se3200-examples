@@ -100,6 +100,67 @@ const cancelBtn = document.getElementById('cancel_btn');
 const modalTitle = document.querySelector('.modal-content h2');
 const modalSubmitBtn = document.getElementById('add_btn');
 
+// User modal functionality
+const userModal = document.getElementById('user_modal');
+const addUserBtn = document.getElementById('add_user_btn');
+const userCancelBtn = document.getElementById('user_cancel_btn');
+const userRegisterBtn = document.getElementById('user_register_btn');
+
+function openUserModal() {
+    userModal.classList.add('show');
+}
+
+function closeUserModal() {
+    userModal.classList.remove('show');
+    document.getElementById('user_form').reset();
+}
+
+addUserBtn.addEventListener('click', function () {
+    openUserModal();
+});
+
+userCancelBtn.addEventListener('click', function () {
+    closeUserModal();
+});
+
+userRegisterBtn.addEventListener('click', function () {
+    const email = document.getElementById('user_email').value;
+    const password = document.getElementById('user_password').value;
+    const confirmPassword = document.getElementById('user_confirm_password').value;
+
+    if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+    }
+
+    // For now, just log the registration data
+    console.log('User registered:', { username, email, password });
+    alert('User registered successfully!');
+    closeUserModal();
+});
+
+// Close user modal when clicking outside of it
+window.addEventListener('click', function (event) {
+    if (event.target === userModal) {
+        closeUserModal();
+    }
+});
+
+addBtn.addEventListener('click', function () {
+    modal.classList.add('show');
+});
+
+cancelBtn.addEventListener('click', function () {
+    closeModal();
+});
+
+// Close modal when clicking outside of it
+window.addEventListener('click', function (event) {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
 function openEditModal(guitar) {
     modalMode = 'edit';
     editingGuitarId = guitar.id;

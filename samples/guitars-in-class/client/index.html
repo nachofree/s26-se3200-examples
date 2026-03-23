@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-
 <body>
     <button id="add_guitar_btn" class="add-guitar-btn">+ Add Guitar</button>
-
+    <button id="add_user_btn" class="add-guitar-btn">+ Add User</button>
+    
     <div id="guitar_grid">
 
     </div>
-
-    <!-- Modal for adding new guitar -->
+    
     <div id="guitar_modal" class="modal">
         <div class="modal-content">
             <h2>Add New Guitar</h2>
@@ -40,7 +37,30 @@
             </form>
         </div>
     </div>
+
+    <div id="user_modal" class="modal">
+        <div class="modal-content">
+            <h2>User Registration</h2>
+            <form id="user_form">
+                <div class="form-group">
+                    <label for="user_email">Email:</label>
+                    <input type="email" id="user_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_password">Password:</label>
+                    <input type="password" id="user_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_confirm_password">Confirm Password:</label>
+                    <input type="password" id="user_confirm_password" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="user_cancel_btn" class="btn-cancel">Cancel</button>
+                    <button type="button" id="user_register_btn" class="btn-add">Register</button>
+                </div>
+            </form>
+        </div>
+    </div> 
 </body>
 <script src="app.js"></script>
-
 </html>
