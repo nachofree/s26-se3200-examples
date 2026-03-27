@@ -73,6 +73,46 @@ def create_a_new_guitar():
     return "created", 201, {"Access-Control-Allow-Origin": "*"}
 
 
+@app.route("/users", methods=["POST"])
+def register_user():
+    if 'email' not in request.form:
+        return "Error: 'email' field is required", 400, {"Access-Control-Allow-Origin": "*"}
+    if 'password' not in request.form:
+        return "Error: 'password' field is required", 400, {"Access-Control-Allow-Origin": "*"}
+
+    email = request.form['email'].strip()
+    password = request.form['password']
+
+    if email == "" or password == "":
+        return "Error: email and password must not be empty", 400, {"Access-Control-Allow-Origin": "*"}
+
+    user_db = User('guitars.db')
+    if user_db.userExists(email):
+        user_db.close()
+        return "Error: user already exists", 409, {"Access-Control-Allow-Origin": "*"}
+
+    try:
+        user_db.saveUser(email, password)
+    except Exception as exc:
+        user_db.close()
+        return f"Error: {exc}", 500, {"Access-Control-Allow-Origin": "*"}
+
+    user_db.close()
+    return "User registered", 201, {"Access-Control-Allow-Origin": "*"}
+
+
+@app.route("/login", methods=["POST"])
+def login_user():
+    # stub login endpoint, validate credentials here
+    if 'username' not in request.form or 'password' not in request.form:
+        return "Error: username and password are required", 400, {"Access-Control-Allow-Origin": "*"}
+
+    username = request.form['username'].strip()
+    password = request.form['password']
+
+    # TODO: implement real login logic
+    return "Login stub received", 200, {"Access-Control-Allow-Origin": "*"}
+
 
 def run():
     app.run(port=5000, host='0.0.0.0')

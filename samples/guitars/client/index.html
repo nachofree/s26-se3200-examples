@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <button id="add_guitar_btn" class="add-guitar-btn">+ Add Guitar</button>
+    <div class="toolbar">
+        <button id="add_guitar_btn" class="add-guitar-btn">+ Add Guitar</button>
+        <button id="new_user_btn" class="add-guitar-btn">New User</button>
+        <button id="login_btn" class="add-guitar-btn">Login</button>
+    </div>
     
     <div id="guitar_grid">
 
@@ -36,7 +40,53 @@
                 </div>
             </form>
         </div>
-    </div> 
+    </div>
+
+    <!-- Modal for registering new user -->
+    <div id="user_modal" class="modal">
+        <div class="modal-content">
+            <h2>Register New User</h2>
+            <form id="user_form">
+                <div class="form-group">
+                    <label for="user_email">Email:</label>
+                    <input type="email" id="user_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_password">Password:</label>
+                    <input type="password" id="user_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_confirm_password">Confirm Password:</label>
+                    <input type="password" id="user_confirm_password" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="user_cancel_btn" class="btn-cancel">Cancel</button>
+                    <button type="button" id="register_btn" class="btn-add">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for login -->
+    <div id="login_modal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <form id="login_form">
+                <div class="form-group">
+                    <label for="login_username">Username:</label>
+                    <input type="text" id="login_username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login_password">Password:</label>
+                    <input type="password" id="login_password" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="login_cancel_btn" class="btn-cancel">Cancel</button>
+                    <button type="button" id="login_submit_btn" class="btn-add">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 <script src="app.js"></script>
 </html>

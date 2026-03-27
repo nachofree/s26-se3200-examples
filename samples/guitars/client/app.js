@@ -87,9 +87,16 @@ function saveGuitar()
 }
 
 const createBtn = document.querySelector('#add_btn')
-createBtn.onclick = saveGuitar()
+createBtn.onclick = saveGuitar
 
-
+const newUserBtn = document.querySelector('#new_user_btn')
+const loginBtn = document.querySelector('#login_btn')
+const userModal = document.getElementById('user_modal')
+const loginModal = document.getElementById('login_modal')
+const userCancelBtn = document.getElementById('user_cancel_btn')
+const loginCancelBtn = document.getElementById('login_cancel_btn')
+const registerBtn = document.getElementById('register_btn')
+const loginSubmitBtn = document.getElementById('login_submit_btn')
 
 // Modal functionality
 const modal = document.getElementById('guitar_modal');
@@ -105,13 +112,121 @@ cancelBtn.addEventListener('click', function () {
     document.getElementById('guitar_form').reset();
 });
 
+userCancelBtn.addEventListener('click', function () {
+    userModal.classList.remove('show');
+    document.getElementById('user_form').reset();
+});
+
+loginCancelBtn.addEventListener('click', function () {
+    loginModal.classList.remove('show');
+    document.getElementById('login_form').reset();
+});
+
+newUserBtn.addEventListener('click', function () {
+    userModal.classList.add('show');
+});
+
+loginBtn.addEventListener('click', function () {
+    loginModal.classList.add('show');
+});
+
+registerBtn.addEventListener('click', function () {
+    registerUser();
+});
+
+loginSubmitBtn.addEventListener('click', function () {
+    loginUser();
+});
+
 // Close modal when clicking outside of it
 window.addEventListener('click', function (event) {
     if (event.target === modal) {
         modal.classList.remove('show');
         document.getElementById('guitar_form').reset();
     }
+    if (event.target === userModal) {
+        userModal.classList.remove('show');
+        document.getElementById('user_form').reset();
+    }
+    if (event.target === loginModal) {
+        loginModal.classList.remove('show');
+        document.getElementById('login_form').reset();
+    }
 });
+
+function registerUser() {
+    let email = document.querySelector('#user_email').value.trim();
+    let password = document.querySelector('#user_password').value;
+    let confirmPassword = document.querySelector('#user_confirm_password').value;
+
+    if (email === '' || password === '' || confirmPassword === '') {
+        alert('Please fill in all registration fields.');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+    }
+
+    let mydata = 'email=' + encodeURIComponent(email);
+    mydata += '&password=' + encodeURIComponent(password);
+
+    fetch('http://localhost:5000/users', {
+        method: 'POST',
+        body: mydata,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(function (response) {
+        if (!response.ok) {
+            return response.text().then(function (text) {
+                throw new Error(text || 'Registration failed');
+            });
+        }
+        return response.text();
+    }).then(function (text) {
+        alert('User registered successfully.');
+        userModal.classList.remove('show');
+        document.getElementById('user_form').reset();
+    }).catch(function (error) {
+        alert('Registration error: ' + error.message);
+    });
+}
+
+function loginUser() {
+    let username = document.querySelector('#login_username').value.trim();
+    let password = document.querySelector('#login_password').value;
+
+    if (username === '' || password === '') {
+        alert('Please enter both username and password.');
+        return;
+    }
+
+    let mydata = 'username=' + encodeURIComponent(username);
+    mydata += '&password=' + encodeURIComponent(password);
+
+    fetch('http://localhost:5000/login', {
+        method: 'POST',
+        body: mydata,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(function (response) {
+        if (!response.ok) {
+            return response.text().then(function (text) {
+                throw new Error(text || 'Login failed');
+            });
+        }
+        return response.text();
+    }).then(function (text) {
+        alert('Login submitted.');
+        loginModal.classList.remove('show');
+        document.getElementById('login_form').reset();
+    }).catch(function (error) {
+        alert('Login error: ' + error.message);
+    });
+}
 
 function load_page() {
     console.log("connected")

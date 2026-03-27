@@ -94,17 +94,18 @@ modalAddBtn.onclick = function () {
 
 
 // Modal functionality
-const modal = document.getElementById('guitar_modal');
-const addBtn = document.getElementById('add_guitar_btn');
-const cancelBtn = document.getElementById('cancel_btn');
+const modal = document.querySelector('#guitar_modal');
+const addBtn = document.querySelector('#add_guitar_btn');
+const cancelBtn = document.querySelector('#cancel_btn');
 const modalTitle = document.querySelector('.modal-content h2');
-const modalSubmitBtn = document.getElementById('add_btn');
+const modalSubmitBtn = document.querySelector('#add_btn');
 
 // User modal functionality
-const userModal = document.getElementById('user_modal');
-const addUserBtn = document.getElementById('add_user_btn');
-const userCancelBtn = document.getElementById('user_cancel_btn');
-const userRegisterBtn = document.getElementById('user_register_btn');
+const userModal = document.querySelector('#user_modal');
+const addUserBtn = document.querySelector('#add_user_btn');
+const userCancelBtn = document.querySelector('#user_cancel_btn');
+const userRegisterBtn = document.querySelector('#user_register_btn');
+const loginBtn = document.querySelector('#login_btn');
 
 function openUserModal() {
     userModal.classList.add('show');
@@ -112,7 +113,7 @@ function openUserModal() {
 
 function closeUserModal() {
     userModal.classList.remove('show');
-    document.getElementById('user_form').reset();
+    document.querySelector('#user_form').reset();
 }
 
 addUserBtn.addEventListener('click', function () {
@@ -123,10 +124,14 @@ userCancelBtn.addEventListener('click', function () {
     closeUserModal();
 });
 
+loginBtn.addEventListener('click', function(){
+    console.log("I clicked hte login")
+})
+
 userRegisterBtn.addEventListener('click', function () {
-    const email = document.getElementById('user_email').value;
-    const password = document.getElementById('user_password').value;
-    const confirmPassword = document.getElementById('user_confirm_password').value;
+    const email = document.querySelector('#user_email').value;
+    const password = document.querySelector('#user_password').value;
+    const confirmPassword = document.querySelector('#user_confirm_password').value;
 
     if (password !== confirmPassword) {
         alert('Passwords do not match!');
@@ -149,7 +154,16 @@ userRegisterBtn.addEventListener('click', function () {
             "Content-Type": "application/x-www-form-urlencoded"
         }
     }).then(function (response) {
-        console.log(response.text)
+        return response.text().then(function (text){
+            return {status: response.status, ok: response.ok, text: text}
+        });
+    }).then(function (result){
+        console.log("THe response text is" , result.text)
+
+        if (!result.ok){
+            alert(result.text)
+            return;
+        }
         load_page()
         closeUserModal();
 
@@ -198,7 +212,7 @@ function openEditModal(guitar) {
 
 function closeModal() {
     modal.classList.remove('show');
-    document.getElementById('guitar_form').reset();
+    document.querySelector('#guitar_form').reset();
 
     // Reset modal state
     modalMode = 'add';

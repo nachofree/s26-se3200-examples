@@ -145,6 +145,14 @@ body{
   box-shadow: 0 4px 15px rgba(125, 211, 252, 0.3);
 }
 
+.toolbar {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
 .add-guitar-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(125, 211, 252, 0.4);
