@@ -30,6 +30,10 @@ class RealDB:
         users = self.cursor.fetchall()
         return len(users)
 
+    def getUser(self, email):
+        self.cursor.execute("SELECT * FROM users WHERE email = ?", [email])
+        users = self.cursor.fetchall()
+        return users[0]
 
     def saveRecord(self, record):
         print(record)
@@ -59,6 +63,18 @@ class RealDB:
            all.append(d)
         #print("Alld the rows are", all)
         return all
+    
+    def validate_password(self, email, password):
+        user = self.getUser(email)
+        print("The user is", user)
+        if user:
+            print("Hello, validate password here")
+            #do this
+            if bcrypt.verify(password, user[1]):
+                return True
+        return False
+
+        
 
 
 

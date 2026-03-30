@@ -22,7 +22,6 @@ def myindex():
     return "<p>index</p>"
 
 
-
 @app.route("/guitars")
 def get_guitars():
     db = RealDB('database.db')
@@ -80,9 +79,21 @@ def update_guitar(id):
 
 
 
-
-
-
+@app.route("/login", methods=["POST"])
+def process_login():
+    print("Got here")
+    if 'email' not in request.form:
+        return "Error: 'email' field is required", 400, {"Access-Control-Allow-Origin": "*"}
+    if 'password' not in request.form:
+        return "Error: 'passwrod' is required", 400, {"Access-Control-Allow-Origin": "*"}
+    db = RealDB('database.db')
+    email = request.form['email'].strip()
+    password = request.form['password'].strip()
+    is_valid = db.validate_password(email, password)
+    if is_valid:
+        return "Valid {email}", 200, {"Access-Control-Allow-Origin": "*"}
+    else:
+        return "Invalid {email}", 401, {"Access-Control-Allow-Origin": "*"}
 
 @app.route("/guitars", methods=["POST"])
 def create_a_new_guitar():

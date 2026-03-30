@@ -107,8 +107,17 @@ const userCancelBtn = document.querySelector('#user_cancel_btn');
 const userRegisterBtn = document.querySelector('#user_register_btn');
 const loginBtn = document.querySelector('#login_btn');
 
+const loginModal = document.querySelector('#login_modal')
+
 function openUserModal() {
     userModal.classList.add('show');
+}
+function openLoginModal() {
+    loginModal.classList.add('show');
+}
+function closeLoginModal() {
+    loginModal.classList.remove('show');
+    // document.querySelector('#user_form').reset();
 }
 
 function closeUserModal() {
@@ -124,9 +133,50 @@ userCancelBtn.addEventListener('click', function () {
     closeUserModal();
 });
 
-loginBtn.addEventListener('click', function(){
+loginBtn.addEventListener('click', function () {
     console.log("I clicked hte login")
+    openLoginModal()
+
 })
+const loginSubmitButton = document.querySelector("#login_submit_btn")
+loginSubmitButton.addEventListener('click', function () {
+    console.log("Clicked the button for logging in")
+    //get the username
+    const email = document.querySelector("#login_email").value
+    //get the password
+    const password = document.querySelector("#login_password").value
+
+    //uriencode
+    let data = "email=" + encodeURIComponent(email)
+    data += "&password=" + encodeURIComponent(password)
+
+    console.log("The query string is ", data)
+
+
+    fetch("http://localhost:5000/login", {
+        method: "POST",
+        body: data,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(function (response) {
+        return response.text().then(function (text) {
+            return { status: response.status, ok: response.ok, text: text }
+        });
+    }).then(function (result) {
+        console.log("THe response text is", result.text)
+
+        if (!result.ok) {
+            alert(result.text)
+            return;
+        }
+        // load_page()
+        // closeUserModal();
+
+    })
+
+})
+
 
 userRegisterBtn.addEventListener('click', function () {
     const email = document.querySelector('#user_email').value;
@@ -154,13 +204,13 @@ userRegisterBtn.addEventListener('click', function () {
             "Content-Type": "application/x-www-form-urlencoded"
         }
     }).then(function (response) {
-        return response.text().then(function (text){
-            return {status: response.status, ok: response.ok, text: text}
+        return response.text().then(function (text) {
+            return { status: response.status, ok: response.ok, text: text }
         });
-    }).then(function (result){
-        console.log("THe response text is" , result.text)
+    }).then(function (result) {
+        console.log("THe response text is", result.text)
 
-        if (!result.ok){
+        if (!result.ok) {
             alert(result.text)
             return;
         }
