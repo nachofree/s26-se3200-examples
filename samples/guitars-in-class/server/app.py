@@ -1,9 +1,12 @@
 from flask import Flask
 from flask import json
-from flask import request
+from flask import request, g
 from realdb import *
+from session_store import SessionStore
 
 app = Flask(__name__)
+
+session_store = SessionStore()
 
 # db = DummyDB('database.json')
 
@@ -158,6 +161,30 @@ def create_a_new_user():
         return "created", 201, {"Access-Control-Allow-Origin": "*"}
     else:
         return "User already exists", 400, {"Access-Control-Allow-Origin": "*"}
+
+
+@app.after_request
+def after_request_function(response):
+    response.headers["Access-Control-Allow-Origin"] = "*" 
+    response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS" 
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization" 
+    return response 
+
+@app.route("/sessions/settings", methods=["PUT"])
+def setFavoriteColor():
+    color = request.form["color"]
+    g.session_data["fav_color"] = color
+    return "Color saved", 200
+
+@app.route("/sessions", methods=["GET"])
+def retrieve_session():
+    return {
+        "id": g.session_id,
+        "data": g.session_data
+    }
+
+    
+
 
 
 
