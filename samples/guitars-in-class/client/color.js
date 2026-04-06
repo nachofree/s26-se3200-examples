@@ -19,8 +19,27 @@ saveBtn.addEventListener("click", function(){
     })
     .then(function(response){
         console.log("Returned from api call")
+        document.body.style.backgroundColor = colorPicker.value
+
     })
 })
+
+deleteBtn.addEventListener("click", function(){
+
+    fetch("http://localhost:5000/sessions", {
+        headers: {
+            "Authorization": authorizationHeader(),
+        },
+        method: "DELETE",
+    })
+    .then(function(response){
+        console.log("Returned from DELETE call")
+        document.body.style.backgroundColor = ""
+
+    })
+})
+
+
 
 function authorizationHeader(){
     let sessionID = localStorage.getItem("sessionID")

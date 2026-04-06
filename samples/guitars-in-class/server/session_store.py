@@ -16,6 +16,8 @@ class SessionStore:
     
     def get_session_data(self, session_id):
         if session_id in self.session_data:
+            print ("The session id is", session_id)
+            print("The session data is ", self.session_data)
             return self.session_data[session_id]
         else:
             return None

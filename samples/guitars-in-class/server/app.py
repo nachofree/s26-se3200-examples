@@ -27,6 +27,9 @@ def myindex():
 
 @app.route("/guitars")
 def get_guitars():
+    if "email" not in g.session_data:
+        return
+    
     db = RealDB('database.db')
 
     # json_data = json.dumps(guitars, indent=2)
@@ -94,6 +97,7 @@ def process_login():
     password = request.form['password'].strip()
     is_valid = db.validate_password(email, password)
     if is_valid:
+        g.session_data["email"] = email
         return "Valid {email}", 200, {"Access-Control-Allow-Origin": "*"}
     else:
         return "Invalid {email}", 401, {"Access-Control-Allow-Origin": "*"}
@@ -160,15 +164,22 @@ def create_a_new_user():
         db.saveUser(email, password)
         return "created", 201, {"Access-Control-Allow-Origin": "*"}
     else:
-        return "User already exists", 400, {"Access-Control-Allow-Origin": "*"}
-
+        return "User already exists", 400
 
 @app.after_request
 def after_request_function(response):
+    print("AFter request")
     response.headers["Access-Control-Allow-Origin"] = "*" 
     response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS" 
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization" 
     return response 
+
+@app.before_request
+def before_request_function():
+    print("BEFORE REQUEST:", request.method)
+    if request.method == "OPTIONS":
+        return "", 204
+    load_session_data()
 
 @app.route("/sessions/settings", methods=["PUT"])
 def setFavoriteColor():
@@ -182,6 +193,31 @@ def retrieve_session():
         "id": g.session_id,
         "data": g.session_data
     }
+
+@app.route("/sessions", methods=["DELETE"])
+def delete_session():
+    if "fav_color" not in g.session_data:
+        return "Unauthenticated", 401
+    del g.session_data['fav_color']
+    return "Deleted", 200
+
+def load_session_data():
+    auth_header = request.headers.get("Authorization")
+    if auth_header and auth_header.startswith('Bearer '):
+        session_id = auth_header.removeprefix('Bearer ')
+    else:
+        session_id = None
+
+    if session_id:
+        session_data = session_store.get_session_data(session_id)
+        print("The session data is ", session_data)
+
+    if session_id == None or session_data == None:
+        session_id = session_store.create_session()
+        session_data = session_store.get_session_data(session_id)
+
+    g.session_id = session_id
+    g.session_data = session_data
 
     
 
