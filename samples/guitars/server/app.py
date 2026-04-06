@@ -1,9 +1,20 @@
+import os
+
 from flask import Flask
 from flask import json
 from flask import request
+from flask import send_file
 from db import *
 
 app = Flask(__name__)
+
+
+@app.route("/openapi.yaml", methods=["GET"])
+def openapi_spec():
+    spec_path = os.path.join(os.path.dirname(__file__), "openapi.yaml")
+    response = send_file(spec_path, mimetype="application/yaml")
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
 
 @app.route("/guitars/<int:id>", methods = ["OPTIONS"])
