@@ -28,7 +28,7 @@ def myindex():
 @app.route("/guitars")
 def get_guitars():
     if "email" not in g.session_data:
-        return
+        return "Not authenticated", 401
     
     db = RealDB('database.db')
 
@@ -98,9 +98,9 @@ def process_login():
     is_valid = db.validate_password(email, password)
     if is_valid:
         g.session_data["email"] = email
-        return "Valid {email}", 200, {"Access-Control-Allow-Origin": "*"}
+        return f"Valid {email}", 200, {"Access-Control-Allow-Origin": "*"}
     else:
-        return "Invalid {email}", 401, {"Access-Control-Allow-Origin": "*"}
+        return f"Invalid {email}", 401, {"Access-Control-Allow-Origin": "*"}
 
 @app.route("/guitars", methods=["POST"])
 def create_a_new_guitar():
@@ -196,10 +196,13 @@ def retrieve_session():
 
 @app.route("/sessions", methods=["DELETE"])
 def delete_session():
-    if "fav_color" not in g.session_data:
+    # if "fav_color" not in g.session_data:
+    if "email" not in g.session_data:
         return "Unauthenticated", 401
-    del g.session_data['fav_color']
+    # del g.session_data['fav_color']
+    del g.session_data['email']
     return "Deleted", 200
+
 
 def load_session_data():
     auth_header = request.headers.get("Authorization")

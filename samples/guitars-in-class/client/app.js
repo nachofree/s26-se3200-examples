@@ -106,6 +106,7 @@ const addUserBtn = document.querySelector('#add_user_btn');
 const userCancelBtn = document.querySelector('#user_cancel_btn');
 const userRegisterBtn = document.querySelector('#user_register_btn');
 const loginBtn = document.querySelector('#login_btn');
+const logoutBtn = document.querySelector('#logout_btn');
 
 const loginModal = document.querySelector('#login_modal')
 
@@ -157,7 +158,8 @@ loginSubmitButton.addEventListener('click', function () {
         method: "POST",
         body: data,
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": authorizationHeader()
         }
     }).then(function (response) {
         return response.text().then(function (text) {
@@ -170,11 +172,26 @@ loginSubmitButton.addEventListener('click', function () {
             alert(result.text)
             return;
         }
-        // load_page()
-        // closeUserModal();
-
+        console.log("Login successful, close modal")
+        closeLoginModal();
+        load_page();
     })
 
+})
+
+logoutBtn.addEventListener("click", function(){
+
+    fetch("http://localhost:5000/sessions", {
+        headers: {
+            "Authorization": authorizationHeader(),
+        },
+        method: "DELETE",
+    })
+    .then(function(response){
+        console.log("Returned from DELETE call")
+        localStorage.removeItem('sessionID')
+        window.location.reload()
+    })
 })
 
 
@@ -290,7 +307,11 @@ function load_page() {
     let grid_div = document.querySelector("#guitar_grid")
     grid_div.innerHTML = ""
     console.log("connected")
-    fetch("http://localhost:5000/guitars")
+    fetch("http://localhost:5000/guitars", {
+        headers: {
+            "Authorization": authorizationHeader(),
+        }
+    })
         .then(function (response) {
             console.log(response)
             return response.json();
@@ -304,4 +325,34 @@ function load_page() {
             })
         })
 }
-load_page()
+
+function authorizationHeader(){
+    let sessionID = localStorage.getItem("sessionID")
+    if (sessionID){
+        console.log("Found a session on the client")
+        return `Bearer ${sessionID}`
+    }
+    else {
+        return "";
+    }
+}
+
+function createSessionId(){
+    fetch("http://localhost:5000/sessions", {
+        headers: {
+            "Authorization": authorizationHeader()
+        }
+    }).then(function(response){
+        response.json().then(function(session){
+            localStorage.setItem('sessionID', session.id)
+            if (session.data.email)
+            {
+                load_page()
+            }
+        })
+    })
+}
+
+createSessionId()
+
+// load_page()
